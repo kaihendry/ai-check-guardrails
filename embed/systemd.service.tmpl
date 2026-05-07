@@ -1,0 +1,12 @@
+[Unit]
+Description=AI Guardrails Audit
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart={{.BinaryPath}} --config {{.ConfigPath}}
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

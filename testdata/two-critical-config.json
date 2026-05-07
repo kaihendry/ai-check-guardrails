@@ -1,0 +1,21 @@
+{
+  "mode": "monitor",
+  "score_threshold": 70,
+  "modules": {
+    "settings": false,
+    "mcp": false,
+    "permissions": false,
+    "tokens": false,
+    "network": false,
+    "evals": false,
+    "sandbox": false,
+    "humanloop": false,
+    "bypass": true,
+    "banner": true,
+    "hooks": false,
+    "gamification": false
+  },
+  "allowlist": {},
+  "banner_url": "https://example.com/security-training",
+  "scan_root": "/home/hendry"
+}
