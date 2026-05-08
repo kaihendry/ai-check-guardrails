@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build & release
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Compute version
+        run: |
+          echo "VERSION=v0.0.$(date -u '+%Y%m%d%H%M%S')+$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
+
+      - name: Build binaries
+        run: |
+          mkdir -p dist
+          for GOOS in linux darwin; do
+            for GOARCH in amd64 arm64; do
+              OUT="dist/ai-check-guardrails-${GOOS}-${GOARCH}"
+              GOOS=$GOOS GOARCH=$GOARCH go build \
+                -ldflags "-s -w -X main.version=$VERSION" \
+                -o "$OUT" \
+                ./cmd/ai-check-guardrails
+            done
+          done
+
+      - name: Generate checksums
+        run: |
+          for f in dist/ai-check-guardrails-*; do
+            sha256sum "$f" > "${f}.sha256"
+          done
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: "Latest (${{ env.VERSION }})"
+          make_latest: true
+          files: dist/*

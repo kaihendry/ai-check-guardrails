@@ -27,6 +27,11 @@ import (
 	_ "github.com/kaihendry/ai-check-guardrails/internal/modules/tokens"
 )
 
+// version is set at build time via -ldflags "-X main.version=..."
+var version = "dev"
+
+func noAutoUpdate() bool { return os.Getenv("NO_AUTO_UPDATE") == "1" }
+
 //go:embed templates/launchd.plist.tmpl
 var launchdTmpl string
 
@@ -37,6 +42,9 @@ var systemdServiceTmpl string
 var systemdTimerTmpl string
 
 func main() {
+	fmt.Fprintf(os.Stderr, "ai-check-guardrails %s\n", version)
+	audit.Version = version
+
 	var (
 		cfgPath        = flag.String("config", "", "path to config JSON")
 		modeOverride   = flag.String("mode", "", "override run mode: monitor or enforce")
@@ -44,11 +52,18 @@ func main() {
 		installSystemd = flag.Bool("install-systemd", false, "install Linux systemd schedule")
 		uninstall      = flag.Bool("uninstall", false, "remove installed schedule")
 		showVersion    = flag.Bool("version", false, "print version and exit")
+		noUpdate       = flag.Bool("no-update", false, "disable self-update check")
 	)
 	flag.Parse()
 
+	if !*noUpdate && !noAutoUpdate() {
+		if err := checkAndUpdate(version); err != nil {
+			fmt.Fprintf(os.Stderr, "[update] check failed: %v (continuing)\n", err)
+		}
+	}
+
 	if *showVersion {
-		fmt.Println(audit.Version)
+		fmt.Fprintln(os.Stderr, version)
 		os.Exit(0)
 	}
 

@@ -14,7 +14,7 @@ import (
 	"github.com/kaihendry/ai-check-guardrails/internal/siem"
 )
 
-const Version = "0.1.0"
+var Version = "dev"
 
 type AuditRun struct {
 	SchemaVersion string           `json:"schema_version"`
