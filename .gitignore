@@ -9,3 +9,5 @@ vendor/
 .vscode/
 .idea/
 testdata/nohooks-repo/
+mock-backend/.aws-sam/
+.envrc

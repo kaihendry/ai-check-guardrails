@@ -92,14 +92,22 @@ func Load(path string) (Config, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return cfg, nil
+			applyEnvOverrides(&cfg)
+			return cfg, validate(cfg)
 		}
 		return cfg, fmt.Errorf("reading config %s: %w", path, err)
 	}
 	if err := json.Unmarshal(data, &cfg); err != nil {
 		return cfg, fmt.Errorf("parsing config %s: %w", path, err)
 	}
+	applyEnvOverrides(&cfg)
 	return cfg, validate(cfg)
+}
+
+func applyEnvOverrides(cfg *Config) {
+	if v := os.Getenv("AI_GUARDRAILS_SIEM_ENDPOINT"); v != "" {
+		cfg.SIEMEndpoint = v
+	}
 }
 
 func validate(cfg Config) error {

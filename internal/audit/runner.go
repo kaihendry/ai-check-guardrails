@@ -97,6 +97,9 @@ func Run(cfg config.Config) (AuditRun, int) {
 		fmt.Fprintf(os.Stderr, "siem emit error: %v\n", err)
 		return run, 2
 	}
+	if cfg.SIEMEndpoint != "" {
+		fmt.Fprintf(os.Stderr, "[siem] findings posted → %s\n", cfg.SIEMEndpoint)
+	}
 
 	return run, exitCode
 }
