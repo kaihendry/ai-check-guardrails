@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.example.ai-check-guardrails</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>{{.BinaryPath}}</string>
+    <string>--config</string>
+    <string>{{.ConfigPath}}</string>
+  </array>
+  <key>StartInterval</key>
+  <integer>1800</integer>
+  <key>StandardOutPath</key>
+  <string>/tmp/ai-check-guardrails.log</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/ai-check-guardrails.log</string>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>UserName</key>
+  <string>{{.Username}}</string>
+</dict>
+</plist>

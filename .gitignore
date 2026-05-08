@@ -1,0 +1,11 @@
+/ai-check-guardrails
+*.exe
+*.test
+*.out
+vendor/
+.DS_Store
+*.tmp
+*.swp
+.vscode/
+.idea/
+testdata/nohooks-repo/

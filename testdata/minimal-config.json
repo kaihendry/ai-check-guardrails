@@ -1,0 +1,9 @@
+{
+  "mode": "monitor",
+  "score_threshold": 70,
+  "allowlist": {
+    "mcps": [],
+    "precommit_hooks": ["gitleaks"]
+  },
+  "banner_url": "https://example.com/security-training"
+}
