@@ -7,6 +7,7 @@ import (
 )
 
 func TestCalculate(t *testing.T) {
+	t.Log("Verifying posture score calculation: start at 100, deduct CRITICAL -25 / HIGH -15 / WARN -5 / INFO 0, floor at 0")
 	tests := []struct {
 		name     string
 		findings []modules.Finding
@@ -37,7 +38,9 @@ func TestCalculate(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Calculate(tt.findings); got != tt.want {
+			got := Calculate(tt.findings)
+			t.Logf("findings=%d score=%d (expected %d)", len(tt.findings), got, tt.want)
+			if got != tt.want {
 				t.Errorf("Calculate() = %d, want %d", got, tt.want)
 			}
 		})

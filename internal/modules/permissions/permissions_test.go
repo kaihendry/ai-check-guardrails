@@ -27,18 +27,21 @@ func writeSettings(t *testing.T, home, content string) {
 }
 
 func TestPermissions_NoSettings(t *testing.T) {
+	t.Log("When no settings file exists, the module should skip gracefully with no findings")
 	fakeHome(t)
 	m := &mod{}
 	findings, err := m.Run(config.Config{Modules: config.ModuleToggles{Permissions: true}})
 	if err != nil {
 		t.Fatal(err)
 	}
+	t.Logf("Got %d findings (expected 0)", len(findings))
 	if len(findings) != 0 {
 		t.Errorf("no settings file should produce no findings, got %v", findings)
 	}
 }
 
 func TestPermissions_MissingPermissionKeys(t *testing.T) {
+	t.Log("Settings without a permissions key should produce a HIGH PERMISSION_MISCONFIGURED finding")
 	home := fakeHome(t)
 	writeSettings(t, home, `{"model":"claude-opus-4-5"}`)
 	m := &mod{}
@@ -46,12 +49,15 @@ func TestPermissions_MissingPermissionKeys(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	t.Logf("Got %d findings: %+v", len(findings), findings)
 	if len(findings) != 1 || findings[0].Type != "PERMISSION_MISCONFIGURED" {
 		t.Errorf("expected PERMISSION_MISCONFIGURED, got %v", findings)
 	}
+	t.Logf("Finding: type=%s severity=%s", findings[0].Type, findings[0].Severity)
 }
 
 func TestPermissions_HasPermissionKey(t *testing.T) {
+	t.Log("Settings with an explicit permissions block (allow/deny lists) indicate controlled tool access — no findings expected")
 	home := fakeHome(t)
 	writeSettings(t, home, `{"permissions":{"allow":[],"deny":["Bash"]}}`)
 	m := &mod{}
@@ -59,6 +65,7 @@ func TestPermissions_HasPermissionKey(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	t.Logf("Got %d findings (expected 0)", len(findings))
 	if len(findings) != 0 {
 		t.Errorf("settings with permissions key should produce no findings, got %v", findings)
 	}

@@ -8,6 +8,7 @@ import (
 )
 
 func TestGamification_EmitsSCOREINFO(t *testing.T) {
+	t.Log("The gamification module should always emit exactly one INFO SCORE_INFO finding to surface the posture score in the findings stream")
 	m := &mod{}
 	findings, err := m.Run(config.Config{
 		Modules:        config.ModuleToggles{Gamification: true},
@@ -16,6 +17,7 @@ func TestGamification_EmitsSCOREINFO(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	t.Logf("Got %d findings: %+v", len(findings), findings)
 	if len(findings) != 1 {
 		t.Fatalf("expected 1 finding, got %d", len(findings))
 	}
@@ -25,4 +27,5 @@ func TestGamification_EmitsSCOREINFO(t *testing.T) {
 	if findings[0].Severity != modules.SeverityInfo {
 		t.Errorf("expected INFO severity, got %s", findings[0].Severity)
 	}
+	t.Logf("Finding: type=%s severity=%s", findings[0].Type, findings[0].Severity)
 }
