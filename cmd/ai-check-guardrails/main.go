@@ -15,6 +15,7 @@ import (
 	// Register all detection modules.
 	_ "github.com/kaihendry/ai-check-guardrails/internal/modules/banner"
 	_ "github.com/kaihendry/ai-check-guardrails/internal/modules/bypass"
+	_ "github.com/kaihendry/ai-check-guardrails/internal/modules/envkeys"
 	_ "github.com/kaihendry/ai-check-guardrails/internal/modules/evals"
 	_ "github.com/kaihendry/ai-check-guardrails/internal/modules/gamification"
 	_ "github.com/kaihendry/ai-check-guardrails/internal/modules/hooks"

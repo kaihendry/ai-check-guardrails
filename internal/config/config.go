@@ -28,6 +28,7 @@ type ModuleToggles struct {
 	Banner       bool `json:"banner"`
 	Hooks        bool `json:"hooks"`
 	Gamification bool `json:"gamification"`
+	EnvKeys      bool `json:"env_keys"`
 }
 
 type Allowlist struct {
@@ -51,7 +52,8 @@ type Config struct {
 	ScoreThreshold int            `json:"score_threshold"`
 	Modules        ModuleToggles  `json:"modules"`
 	Allowlist      Allowlist      `json:"allowlist"`
-	TokenBaseline  *TokenBaseline `json:"token_baseline,omitempty"`
+	TokenBaseline   *TokenBaseline `json:"token_baseline,omitempty"`
+	EnvKeyWatchList []string       `json:"env_key_watch_list,omitempty"`
 }
 
 func defaults() Config {
@@ -73,6 +75,7 @@ func defaults() Config {
 			Banner:       true,
 			Hooks:        true,
 			Gamification: true,
+			EnvKeys:      true,
 		},
 		Allowlist: Allowlist{
 			PreCommitHooks: []string{"gitleaks"},
