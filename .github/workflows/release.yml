@@ -45,7 +45,7 @@ jobs:
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: latest
+          tag_name: ${{ env.VERSION }}
           name: "Latest (${{ env.VERSION }})"
           make_latest: true
           files: dist/*
