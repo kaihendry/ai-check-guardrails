@@ -1,0 +1,28 @@
+site_name: ai-check-guardrails
+site_url: https://kaihendry.github.io/ai-check-guardrails/
+repo_url: https://github.com/kaihendry/ai-check-guardrails
+docs_dir: docs
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Modules:
+      - Overview: modules/index.md
+      - banner: modules/banner.md
+      - bypass: modules/bypass.md
+      - envkeys: modules/envkeys.md
+      - evals: modules/evals.md
+      - gamification: modules/gamification.md
+      - hooks: modules/hooks.md
+      - humanloop: modules/humanloop.md
+      - mcp: modules/mcp.md
+      - network: modules/network.md
+      - permissions: modules/permissions.md
+      - sandbox: modules/sandbox.md
+      - settings: modules/settings.md
+      - tokens: modules/tokens.md
+  - Reference:
+      - Module Interface: reference/module-interface.md
+      - Configuration: reference/config.md
+      - Severity Levels: reference/severity.md
