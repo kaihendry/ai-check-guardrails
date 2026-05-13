@@ -13,13 +13,14 @@ const (
 )
 
 type Finding struct {
-	Type        FindingType `json:"type"`
-	Severity    Severity    `json:"severity"`
-	Module      string      `json:"module"`
-	Resource    string      `json:"resource"`
-	Description string      `json:"description"`
-	Remediation string      `json:"remediation"`
-	Confidence  *float64    `json:"confidence,omitempty"`
+	Type        FindingType    `json:"type"`
+	Severity    Severity       `json:"severity"`
+	Module      string         `json:"module"`
+	Resource    string         `json:"resource"`
+	Description string         `json:"description"`
+	Remediation string         `json:"remediation"`
+	Confidence  *float64       `json:"confidence,omitempty"`
+	Metadata    map[string]any `json:"metadata,omitempty"`
 }
 
 type Module interface {

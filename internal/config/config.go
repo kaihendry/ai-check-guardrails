@@ -39,9 +39,10 @@ type Allowlist struct {
 }
 
 type TokenBaseline struct {
-	DailyMean  int     `json:"daily_mean"`
-	StdDev     float64 `json:"std_dev"`
-	Multiplier float64 `json:"multiplier"`
+	DailyMean    int     `json:"daily_mean"`
+	StdDev       float64 `json:"std_dev"`
+	Multiplier   float64 `json:"multiplier"`
+	LookbackHours int    `json:"lookback_hours,omitempty"`
 }
 
 type Config struct {
@@ -122,9 +123,6 @@ func validate(cfg Config) error {
 	}
 	if cfg.ScanRoot != "" && !filepath.IsAbs(cfg.ScanRoot) {
 		return fmt.Errorf("scan_root must be an absolute path")
-	}
-	if cfg.Modules.Tokens && cfg.TokenBaseline == nil {
-		return fmt.Errorf("token_baseline required when tokens module is enabled")
 	}
 	return nil
 }

@@ -65,12 +65,12 @@ func TestLoad_AcceptsHTTPSSIEM(t *testing.T) {
 	}
 }
 
-func TestLoad_TokensRequiresBaseline(t *testing.T) {
-	t.Log("Enabling the tokens module without a baseline is a config error — anomaly detection needs reference values")
+func TestLoad_TokensWithoutBaseline(t *testing.T) {
+	t.Log("Enabling the tokens module without a baseline is valid — it reports usage totals without anomaly detection")
 	_, err := Load(writeConfig(t, `{"modules":{"tokens":true}}`))
 	t.Logf("Load error: %v", err)
-	if err == nil {
-		t.Error("expected error: tokens enabled without baseline")
+	if err != nil {
+		t.Errorf("expected no error for tokens without baseline, got: %v", err)
 	}
 }
 

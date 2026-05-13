@@ -1,0 +1,18 @@
+{
+  "mode": "monitor",
+  "modules": {
+    "settings": false,
+    "mcp": false,
+    "permissions": false,
+    "tokens": true,
+    "network": false,
+    "evals": false,
+    "sandbox": false,
+    "humanloop": false,
+    "bypass": false,
+    "banner": false,
+    "hooks": false,
+    "gamification": false,
+    "env_keys": false
+  }
+}

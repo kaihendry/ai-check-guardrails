@@ -1,0 +1,2 @@
+{"parentUuid":null,"isSidechain":false,"type":"assistant","timestamp":"2026-05-13T10:00:00Z","message":{"role":"assistant","model":"claude-sonnet-4-6","usage":{"input_tokens":50000,"output_tokens":30000,"cache_creation_input_tokens":60000,"cache_read_input_tokens":80000}}}
+{"parentUuid":null,"isSidechain":false,"type":"assistant","timestamp":"2026-05-13T11:00:00Z","message":{"role":"assistant","model":"claude-sonnet-4-6","usage":{"input_tokens":40000,"output_tokens":20000,"cache_creation_input_tokens":50000,"cache_read_input_tokens":70000}}}

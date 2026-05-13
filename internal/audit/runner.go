@@ -66,8 +66,11 @@ func Run(cfg config.Config) (AuditRun, int) {
 	banner.Display(s, cfg)
 
 	exitCode := 0
-	if len(findings) > 0 {
-		exitCode = 1
+	for _, f := range findings {
+		if f.Severity != modules.SeverityInfo {
+			exitCode = 1
+			break
+		}
 	}
 
 	if cfg.Mode == config.ModeEnforce {
