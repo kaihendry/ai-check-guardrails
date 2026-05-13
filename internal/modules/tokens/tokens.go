@@ -1,3 +1,65 @@
+// # tokens
+//
+// Reads Claude transcript JSONL files from ~/.claude/projects/**/*.jsonl and reports
+// token usage — input, output, cache write/read, estimated USD cost — over a configurable
+// lookback window. Optionally emits a TOKEN_ANOMALY finding when usage exceeds a
+// statistical threshold.
+//
+// # Findings
+//
+// | Type | Severity | Description | Remediation |
+// |------|----------|-------------|-------------|
+// | TOKEN_USAGE | INFO | Always emitted. Reports total tokens, cost estimate, and per-model / per-project breakdown for the lookback window. | — |
+// | TOKEN_ANOMALY | WARN | Usage exceeds the anomaly threshold (mean + multiplier × std_dev). Includes a confidence field (0–1). | Review recent Claude sessions for unusual activity. |
+//
+// # Anomaly Threshold
+//
+// The threshold is calculated as:
+//
+//	threshold = daily_mean + multiplier × std_dev
+//
+// TOKEN_ANOMALY is emitted when total tokens in the lookback window exceed this value.
+// The confidence field reflects how many standard deviations above the mean the usage is,
+// normalised to [0, 1].
+//
+// # Metadata (TOKEN_USAGE)
+//
+// | Key | Description |
+// |-----|-------------|
+// | lookback_hours | The window used for this run |
+// | total_tokens | Sum of input + output + cache_write + cache_read |
+// | input_tokens | Raw input tokens |
+// | output_tokens | Raw output tokens |
+// | cache_write_tokens | Cache creation tokens |
+// | cache_read_tokens | Cache read tokens |
+// | est_cost_usd | Estimated cost based on published per-model rates |
+// | web_searches | Count of web_search_requests from server tool use |
+// | web_fetches | Count of web_fetch_requests from server tool use |
+// | by_model | Per-model breakdown (same sub-fields as above) |
+// | by_project | Per-project total token count (keyed by cwd) |
+//
+// # Configuration
+//
+// | Key | Type | Default | Required | Description |
+// |-----|------|---------|----------|-------------|
+// | modules.tokens | bool | false | — | Enable or disable this module |
+// | token_baseline | object | null | Optional | Baseline stats for anomaly detection; omit to skip anomaly check |
+// | token_baseline.daily_mean | int | — | Yes (if baseline set) | Expected token count per lookback window |
+// | token_baseline.std_dev | float | — | Yes (if baseline set) | Standard deviation |
+// | token_baseline.multiplier | float | 3.0 | No | Anomaly threshold multiplier (higher = less sensitive) |
+// | token_baseline.lookback_hours | int | 24 | No | How many hours of transcripts to scan |
+//
+// Example config:
+//
+//	{
+//	  "modules": { "tokens": true },
+//	  "token_baseline": {
+//	    "daily_mean": 50000,
+//	    "std_dev": 10000,
+//	    "multiplier": 3.0,
+//	    "lookback_hours": 24
+//	  }
+//	}
 package tokens
 
 import (

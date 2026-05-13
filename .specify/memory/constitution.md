@@ -1,12 +1,12 @@
 <!--
 SYNC IMPACT REPORT
 ==================
-Version change: N/A → 1.0.0 (initial ratification)
+Version change: 1.0.0 → 1.1.0
 
-Modified principles: N/A (first authoring)
+Modified principles: N/A
 
 Added sections:
-  - Core Principles: I. Simplicity, II. Integrity
+  - Core Principles: I. Simplicity, II. Integrity, III. Documentation (new)
   - Security Engineering Standards
   - CLI Interface Standards
   - Governance
@@ -14,9 +14,9 @@ Added sections:
 Removed sections: N/A
 
 Templates requiring updates:
-  - .specify/templates/plan-template.md  ✅ Constitution Check section references this file dynamically — no changes needed
-  - .specify/templates/spec-template.md  ✅ No principle-specific section requirements — no changes needed
-  - .specify/templates/tasks-template.md ✅ Task categories align with 2-principle model — no changes needed
+  - .specify/templates/plan-template.md  ✅ Constitution Check table picks up new principle automatically
+  - .specify/templates/spec-template.md  ✅ No changes needed
+  - .specify/templates/tasks-template.md ✅ No changes needed
 
 Deferred TODOs: none
 -->
@@ -52,6 +52,25 @@ The tool's output MUST be accurate, auditable, and honest about uncertainty.
 
 **Rationale**: A security tool that hides failures or hedges silently is worse than
 no tool. Users rely on this output to make trust decisions.
+
+### III. Documentation
+
+The package-level Go doc comment in each module is the **single source of truth** for
+that module's documentation. `docs/modules/<name>.md` is a generated file — produced by
+`make gen-docs` (`cmd/gendocs`) — and MUST NOT be edited by hand.
+
+- Every module in `internal/modules/` MUST have a package-level doc comment written as
+  markdown (Go 1.19+ doc comment format). It MUST cover: what the module reads/detects,
+  all findings (type, severity, description), configuration keys, and an example config.
+- `docs/modules/<name>.md` is generated from the Go doc comment. Regenerate with
+  `make gen-docs` and commit the result alongside any module change.
+- Any spec that adds or modifies a module MUST include a task to update the package doc
+  comment and regenerate the docs. The plan's Constitution Check MUST confirm this.
+- Stale status notes (e.g., "not yet implemented") MUST be removed when the feature
+  ships.
+
+**Rationale**: Keeping docs in the source file means they are reviewed in the same PR as
+the code change. Generated markdown files stay in sync mechanically, not by convention.
 
 ## Security Engineering Standards
 
@@ -92,4 +111,4 @@ an amendment — no silent exceptions.
 **Compliance review**: All PRs MUST reference applicable constitution gates in the
 plan's Constitution Check section. Complexity violations require explicit sign-off.
 
-**Version**: 1.0.0 | **Ratified**: 2026-05-07 | **Last Amended**: 2026-05-07
+**Version**: 1.1.0 | **Ratified**: 2026-05-07 | **Last Amended**: 2026-05-13
