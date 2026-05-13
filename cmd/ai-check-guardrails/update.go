@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"time"
 )
 
@@ -44,7 +45,7 @@ func checkAndUpdate(currentVersion string) error {
 		return fmt.Errorf("decode release: %w", err)
 	}
 
-	if rel.TagName == currentVersion {
+	if rel.TagName == currentVersion || !strings.HasPrefix(rel.TagName, "v") {
 		return nil
 	}
 

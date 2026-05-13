@@ -68,6 +68,34 @@ func TestCheckAndUpdate_UpdatesWhenNewVersionAvailable(t *testing.T) {
 	}
 }
 
+func TestCheckAndUpdate_NoopWhenReleaseTagIsMovingLatest(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		rel := githubRelease{TagName: "latest"}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(rel)
+	}))
+	defer srv.Close()
+
+	origBase := githubAPIBase
+	githubAPIBase = srv.URL
+	defer func() { githubAPIBase = origBase }()
+
+	origGet := getExecutable
+	downloaded := false
+	getExecutable = func() (string, error) {
+		downloaded = true
+		return "", nil
+	}
+	defer func() { getExecutable = origGet }()
+
+	if err := checkAndUpdate("v0.0.20260513135826+5118f3a"); err != nil {
+		t.Fatalf("checkAndUpdate returned error: %v", err)
+	}
+	if downloaded {
+		t.Error("binary was replaced despite release tag being a moving 'latest' tag")
+	}
+}
+
 func TestCheckAndUpdate_NoopWhenAlreadyCurrent(t *testing.T) {
 	const currentVersion = "v0.0.20260508000000+abc1234"
 
